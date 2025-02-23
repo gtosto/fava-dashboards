@@ -6,6 +6,8 @@ from typing import Dict
 from typing import List
 
 import yaml
+import yaml_include
+import os
 from beancount.core.inventory import Inventory
 from beanquery.query import run_query
 from fava.application import render_template_string
@@ -180,6 +182,10 @@ class FavaDashboards(FavaExtensionBase):
     def bootstrap(self, dashboard_id):
         ext_config = self.read_ext_config()
         ledger = self.get_ledger()
+
+        # addd the !include tag constructor
+        base_dir = ext_config.dashboards_path.parent
+        yaml.add_constructor("!include", yaml_include.Constructor(base_dir=base_dir), yaml.SafeLoader)
 
         dashboards_yaml = self.read_dashboards_yaml(ext_config.dashboards_path)
         dashboards = dashboards_yaml.get("dashboards", [])
