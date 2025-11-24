@@ -1,12 +1,23 @@
 {
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": ["editorconfig.editorconfig", "ms-python.python", "Lencerf.beancount"]
-    }
-  },
-  "postCreateCommand": "make deps",
-  "forwardPorts": [5000]
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "features": {
+        "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+            "packages": "git-flow"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "editorconfig.editorconfig",
+                "ms-python.python",
+                "Lencerf.beancount"
+            ]
+        }
+    },
+    "postCreateCommand": "make deps",
+    "forwardPorts": [
+        5000
+    ]
 }
