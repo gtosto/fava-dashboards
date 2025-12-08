@@ -17,12 +17,14 @@ from fava.ext import FavaExtensionBase
 from fava.ext import extension_endpoint
 from fava.helpers import FavaAPIError
 from flask import request
+from flask import Blueprint, Response
 
 from fava_dashboards import legacy
 from fava_dashboards.utils import clamp_to_ledger_range
 from fava_dashboards.utils import get_ledger_duration
 from fava_dashboards.utils import read_dashboards_tsx
 from fava_dashboards.utils import read_dashboards_yaml
+
 
 logger = logging.getLogger(__name__)
 if loglevel := os.environ.get("LOGLEVEL"):
@@ -133,6 +135,7 @@ class FavaDashboards(FavaExtensionBase):
             commodities=commodities,
         )
 
+
     @extension_endpoint("query")
     @api_response
     def api_v1_query(self):
@@ -174,3 +177,24 @@ class FavaDashboards(FavaExtensionBase):
             return {"ledgerData": ledger_data, "configJs": config_js, "utilsJs": utils}
         else:
             raise FavaAPIError(f'invalid dashboard file "{ext_config.dashboards_path}"')
+
+    @extension_endpoint("myimport")
+    def myimport(self):
+        base = self.read_ext_config().dashboards_path.parent
+        name = request.args.get("name")
+        print(base, name)
+        path = (base / name).resolve()
+        uri = path.as_posix()
+        print(path, uri)
+
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                file = f.read()
+                # return {
+                #     "path": str(path), "content": str(file)
+                # }
+            return Response(file, mimetype="application/javascript")
+        except Exception as ex:
+            raise FavaAPIError(f"cannot read configuration file {path}: {ex}") from ex
+
+

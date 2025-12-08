@@ -13,6 +13,8 @@ import * as zodv2 from "../schemas/v2/validation";
 import { ErrorAlert } from "./ErrorAlert";
 import { loadTSX, runAsyncFunction } from "./utils";
 
+import {loadDashboard} from "./resolver"
+
 export interface ConfigContextType {
   ledgerData: ledgerv2.LedgerData;
   config: dashboardv2.Config;
@@ -27,6 +29,7 @@ interface ConfigProviderProps {
 
 export function ConfigProvider({ extensionContext, children }: ConfigProviderProps) {
   const { isPending: isPendingConfig, error: errorConfig, data: config } = useConfig();
+
   const {
     isPending: isPendingEval,
     error: errorEval,
@@ -39,7 +42,11 @@ export function ConfigProvider({ extensionContext, children }: ConfigProviderPro
         throw new Error("Config not loaded");
       }
 
-      const dynamicConfig = loadTSX(config.configJs, dependencies);
+      //const dynamicConfig = loadTSX(config.configJs, dependencies);
+      const dynamicConfig = await loadDashboard();
+      console.dir("dynamicConfig", dynamicConfig)
+      //const dynamicConfig = await loadDashboard();
+
 
       // load schema v1
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,6 +59,9 @@ export function ConfigProvider({ extensionContext, children }: ConfigProviderPro
         const utils = config.utilsJs ? ((await runAsyncFunction(config.utilsJs)) as v1.Utils) : {};
         return migrateV1ToV2(result.data, utils, extensionContext);
       }
+
+      console.log("dynamicConfig:" + dynamicConfig)
+      console.dir(dynamicConfig)
 
       // by default, load schema v2
       const result = zodv2.ZConfig.safeParse(dynamicConfig);
@@ -98,3 +108,4 @@ const dependencies: Record<string, unknown> = {
   "fava-dashboards": api,
   react: React,
 };
+
