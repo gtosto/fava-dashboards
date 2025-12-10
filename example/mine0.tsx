@@ -14,31 +14,17 @@ import {
 
 import React, { useState } from 'react';
 
-import * as Colors from '@dashboard/common/skin.ts'
-import * as Utils from '@dashboard/common/utils.ts'
 
-// Importa alcuni Panel definiti in altri moduli
+// // // importa il modulo esterno
 import {MyHtmlPanel} from '@dashboard/panels/due.tsx'
-import {AssetsPanel} from '@dashboard/panels/assets.tsx'
-
-
-const currencyVariable: VariableDefinition = {
-  name: "currency",
-  label: "Currency",
-  options: async ({ ledger }) => {
-    return ledger.operatingCurrencies;
-  },
-};
 
 
 export default defineConfig({
   dashboards: [
     {
       name: "Uno",
-      variables: [currencyVariable],
       panels: [
         MyHtmlPanel,
-        AssetsPanel,
         //InlinePanel1,
         {
           title: "React Test Panel",
