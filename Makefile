@@ -38,11 +38,11 @@ test: test-py test-js
 
 ## Utils
 run:
-	cd example; uv run fava example.beancount
+	cd example; uv run fava -d -H 0.0.0.0 -p 5010 example.beancount
 
 dev:
 	npx concurrently --names fava,esbuild \
-	  "cd example; PYTHONUNBUFFERED=1 uv run fava --debug example.beancount" \
+	  "cd example; PYTHONUNBUFFERED=1 uv run fava --debug -p 5010 example.beancount" \
 	  "cd frontend; npm install && npm run watch"
 
 lint:

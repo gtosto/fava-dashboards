@@ -42,10 +42,12 @@ export function ConfigProvider({ extensionContext, children }: ConfigProviderPro
         throw new Error("Config not loaded");
       }
 
+      console.dir("config.configJs", config.configJs)
+
       //const dynamicConfig = loadTSX(config.configJs, dependencies);
-      const dynamicConfig = await loadDashboard();
+      const dynamicConfig = await loadDashboard(config.configJs);
       console.dir("dynamicConfig", dynamicConfig)
-      //const dynamicConfig = await loadDashboard();
+
 
 
       // load schema v1

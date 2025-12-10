@@ -195,6 +195,6 @@ class FavaDashboards(FavaExtensionBase):
                 # }
             return Response(file, mimetype="application/javascript")
         except Exception as ex:
-            raise FavaAPIError(f"cannot read configuration file {path}: {ex}") from ex
+            raise FavaAPIError(f"cannot import module at {path}: {ex}") from ex
 
 

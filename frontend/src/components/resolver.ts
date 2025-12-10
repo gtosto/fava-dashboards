@@ -85,7 +85,7 @@ async function load(name: string) {
   const hit = moduleCache[name]
   if (hit) {
     console.debug(`module ${name} hit cache ${JSON.stringify(hit)}`)
-    return moduleCache[name]; // già caricato
+    return moduleCache[name].exports.default; // già caricato
   }
 
   // carica i sorgenti
@@ -157,8 +157,8 @@ moduleCache["react"] = {
   exports: React
 }
 
-export async function loadDashboard() {
-  console.log("AAAAAAAAAAAAAAAAAA")
+export async function loadDashboard(js: string) {
+  console.debug("Loading dashboard config",js)
   const result = await load("@dashboard/mine.tsx")
   return result
 }

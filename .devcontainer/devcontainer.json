@@ -19,6 +19,6 @@
     },
     "postCreateCommand": "make deps",
     "forwardPorts": [
-        5000
+        5010
     ]
 }

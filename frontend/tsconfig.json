@@ -8,6 +8,11 @@
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
         "declaration": true,
-        "outDir": "dist"
+        "sourceMap": true,
+        "outDir": "dist",
+
+        "paths" : {
+          "@dashboard/*" : ["../example/*"]
+        }
     }
 }

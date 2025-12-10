@@ -11,3 +11,4 @@ wheels/
 
 # frontend
 frontend/node_modules/*
+secrets.md
