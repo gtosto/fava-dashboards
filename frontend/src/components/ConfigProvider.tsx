@@ -11,9 +11,10 @@ import * as dashboardv2 from "../schemas/v2/dashboard";
 import * as ledgerv2 from "../schemas/v2/ledger";
 import * as zodv2 from "../schemas/v2/validation";
 import { ErrorAlert } from "./ErrorAlert";
-import { loadTSX, runAsyncFunction } from "./utils";
+import { runAsyncFunction } from "./utils";
+import { loadTSX } from "./loader";
 
-import {loadDashboard} from "./resolver"
+import {loadDashboard} from "./loader"
 
 export interface ConfigContextType {
   ledgerData: ledgerv2.LedgerData;
@@ -44,8 +45,8 @@ export function ConfigProvider({ extensionContext, children }: ConfigProviderPro
 
       console.dir("config.configJs", config.configJs)
 
-      //const dynamicConfig = loadTSX(config.configJs, dependencies);
-      const dynamicConfig = await loadDashboard(config.configJs);
+      const dynamicConfig = await loadTSX(config.configJs, dependencies);
+      //const dynamicConfig = await loadDashboard(config.configJs);
       console.dir("dynamicConfig", dynamicConfig)
 
 

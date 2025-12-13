@@ -12,43 +12,7 @@ import {
   VariableDefinition,
 } from "fava-dashboards";
 
-
-import React, { useState } from 'react';
-import type { Panel } from "fava-dashboards";
-
-
-// const AAA = import('./panels/aaa.tsx');
-
-const DynamicPanel = async () : Promise<Panel> => {
-   const p = import('./panels/aaa.tsx');
-   return (await p).default
-
-  //const {default: obj } = await import('./panels/aaa.tsx');
-  //return obj as Panel
-};
-
-// async function createPanel() {
-//   const result = await DynamicPanel2();
-//   return result
-// }
-
-// const AAA_Panel = {
-//   title : "AAA",
-//   kind : "react",
-//   spec : () =>  {
-//       return <div>
-//         <h1>titolo</h1>
-//         <p>paragrafo2</p>
-//       </div>;
-//   }
-// }
-
-//return <a onClick={() => setCounter(counter + 1)}>Click me ({counter})</a>;
-
-// const BBB = React.lazy( async () => {
-//   return await import('./panels/aaa.tsx');
-// });
-
+import {MyHtmlPanel} from "@dashboard/panels/due.tsx"
 
 // Base colors from fava
 const COLOR_PROFIT = "#3daf46";
@@ -56,7 +20,6 @@ const COLOR_LOSS = "#af3d3d";
 // colors from https://mui.com/material-ui/getting-started/templates/dashboard/
 const TREND_POSITIVE = (opacity = 1) => `hsla(120, 44%, 53%, ${opacity})`;
 const TREND_NEGATIVE = (opacity = 1) => `hsla(0, 90%, 40%, ${opacity})`;
-
 
 function getCurrencyFormatter(currency: string) {
   return new Intl.NumberFormat(undefined, {
@@ -280,6 +243,23 @@ const currencyVariable: VariableDefinition = {
 
 export default defineConfig({
   dashboards: [
+    {
+      name: "test",
+      variables: [currencyVariable],
+      panels: [
+        {
+          title: "HTML Test Panel",
+          height: "80px",
+          kind: "html",
+          spec: () => {
+            //const [counter, setCounter] = React.useState(0);
+            //return <a>Click me</a>;
+            return "<div>?????????????</div>";
+          },
+        },
+        MyHtmlPanel
+      ],
+    },
     {
       name: "Overview",
       variables: [currencyVariable],
@@ -1698,13 +1678,6 @@ GROUP BY year, month`,
           },
         },
       ],
-    },
-    {
-      name: "Mytest2",
-      variables: [currencyVariable],
-      panels: [
-
-      ]
     },
     {
       name: "Projection",
