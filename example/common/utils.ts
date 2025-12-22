@@ -163,6 +163,66 @@ export function StatChart(
   };
 }
 
+export async function YearOverYear(ledger: Ledger, currency: string, query: string): Promise<EChartsSpec> {
+  const currencyFormatter = getCurrencyFormatter(currency);
+  const result = await ledger.query(query);
+  const years = iterateYears(ledger.dateFirst, ledger.dateLast);
+  const maxAccounts = 7; // number of accounts to show, sorted by sum
+
+  const accountSums: Record<string, number> = {};
+  const amounts: Record<string, number> = {};
+  for (const row of result) {
+    if (!(row.account in accountSums)) {
+      accountSums[row.account] = 0;
+    }
+    const value = row.account.startsWith("Income:") ? -row.value[currency] : row.value[currency];
+    amounts[`${row.year}/${row.account}`] = value;
+    accountSums[row.account] += value;
+  }
+
+  const accounts = Object.entries(accountSums)
+    .sort(([, a], [, b]) => b - a)
+    .map(([name]) => name)
+    .slice(0, maxAccounts)
+    .reverse();
+  return {
+    legend: {
+      top: "bottom",
+    },
+    tooltip: {
+      formatter: "{a}",
+    },
+    xAxis: {
+      axisLabel: {
+        formatter: currencyFormatter,
+      },
+    },
+    yAxis: {
+      data: accounts.map((account) => account.split(":").slice(1).join(":")),
+    },
+    grid: {
+      containLabel: true,
+      left: 0,
+    },
+    series: years.map((year) => ({
+      type: "bar",
+      name: year,
+      data: accounts.map((account) => amounts[`${year}/${account}`] ?? 0),
+      label: {
+        show: true,
+        position: "right",
+        formatter: (params: any) => currencyFormatter(params.value),
+      },
+    })),
+    onClick: (event) => {
+      const link = "../../account/{account}/?time={time}"
+        .replace("{account}", accounts[event.dataIndex])
+        .replace("{time}", event.seriesName ?? "");
+      window.open(ledger.urlFor(link));
+    },
+  };
+}
+
 // export const Utils = {
 //   getCurrencyFormatter,
 //   iterateMonths,

@@ -6,8 +6,10 @@
 
 option "operating_currency" "USD"
 1980-05-12 custom "fava-option" "language" "en"
+;      'config': 'dashboards.tsx'
+
 1980-05-12 custom "fava-extension" "fava_dashboards" "{
-      'config': 'test.tsx'
+      'config': 'mine.tsx'
 }"
 
 
