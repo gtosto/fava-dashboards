@@ -178,8 +178,9 @@ class FavaDashboards(FavaExtensionBase):
         else:
             raise FavaAPIError(f'invalid dashboard file "{ext_config.dashboards_path}"')
 
-    @extension_endpoint("myimport")
-    def myimport(self):
+    @extension_endpoint("myload")
+    @api_response
+    def load(self):
         base = self.read_ext_config().dashboards_path.parent
         name = request.args.get("name")
         print(base, name)
@@ -193,8 +194,9 @@ class FavaDashboards(FavaExtensionBase):
                 # return {
                 #     "path": str(path), "content": str(file)
                 # }
-            return Response(file, mimetype="application/javascript")
+            #return Response(file, mimetype="application/javascript")
+            return str(file)
         except Exception as ex:
-            raise FavaAPIError(f"cannot import module at {path}: {ex}") from ex
+            raise FavaAPIError(f"{ex}") from ex
 
 

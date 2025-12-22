@@ -14,7 +14,7 @@ const moduleCache: Record<string, any> = {
 };
 
 
-const FETCH_BASE = "/beancount/extension/FavaDashboards/myimport"
+const FETCH_BASE = "/beancount/extension/FavaDashboards/myload"
 
 
 async function fetch_moduleSource(name: string): Promise<string> {
@@ -25,9 +25,21 @@ async function fetch_moduleSource(name: string): Promise<string> {
   if ( name.startsWith('@dashboard/') ) {
     // carica il modulo da remoto, risolvendo ...
     const path = name.split("@dashboard/")[1];
-    const source = await fetch(FETCH_BASE + "?name=" +path)
-    // const source = await fs.readFile(BASE_DIR + path, "utf8");
-    return source.text()
+    // const source = await fetch(FETCH_BASE + "?name=" +path)
+    // return source.text()
+
+    const p = fetch(`${FETCH_BASE}?name=${path}`)
+      .then(rep => rep.json())
+//      .catch( reason => {throw new Error("reason is " + reason)})
+      .then(j => {
+        if (j.success) {
+          return j.data
+        }
+        else throw new Error(`cannot load module ${name}, reason: ${j.error}`)
+      })
+
+    const source = await p
+    return source
   }
 
   //return ""
@@ -75,6 +87,7 @@ async  function resolve(name: string, dependencies: Record<string, unknown>) {
   // carica i sorgenti
   // ed analizza le dipendenze
   const code = await fetch_moduleSource(name)
+
   //console.debug(code)
   const imports = collect_imports(code);
 
