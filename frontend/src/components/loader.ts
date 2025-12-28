@@ -133,11 +133,11 @@ import React from "react";
 
 
 
-export async function loadDashboard(js: string) {
-  console.debug("Loading dashboard config",js)
-  const result = await load("@dashboard/mine.tsx")
-  return result
-}
+// export async function loadDashboard(js: string) {
+//   console.debug("Loading dashboard config",js)
+//   const result = await load("@dashboard/mine.tsx")
+//   return result
+// }
 // ---------------------------------------------------------------------------
 
 export async function loadTSX(code: string, dependencies: Record<string, unknown>): Promise<Record<string, any>> {

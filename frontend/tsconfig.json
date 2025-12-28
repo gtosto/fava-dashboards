@@ -1,4 +1,7 @@
 {
+
+    "include": ["src/**/*.ts", "scripts/**/*.ts"],
+
     "compilerOptions": {
         "target": "es2023",
         "module": "es2022",

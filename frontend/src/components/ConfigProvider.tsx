@@ -14,8 +14,6 @@ import { ErrorAlert } from "./ErrorAlert";
 import { runAsyncFunction } from "./utils";
 import { loadTSX } from "./loader";
 
-import {loadDashboard} from "./loader"
-
 export interface ConfigContextType {
   ledgerData: ledgerv2.LedgerData;
   config: dashboardv2.Config;
