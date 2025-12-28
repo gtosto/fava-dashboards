@@ -2,7 +2,7 @@
 import { parse } from "@babel/parser";
 import { transform } from "@babel/standalone";
 import { log } from "console";
-
+import { fetchJSON } from "../api/api";
 
 import { runFunction } from "./utils";
 
@@ -14,7 +14,8 @@ const moduleCache: Record<string, any> = {
 };
 
 
-const FETCH_BASE = "/beancount/extension/FavaDashboards/myload"
+//const FETCH_BASE = "/beancount/extension/FavaDashboards/myload"
+const FETCH_BASE = "myload"
 
 
 async function fetch_moduleSource(name: string): Promise<string> {
@@ -141,7 +142,7 @@ import React from "react";
 // ---------------------------------------------------------------------------
 
 export async function loadTSX(code: string, dependencies: Record<string, unknown>): Promise<Record<string, any>> {
-  console.log("Loafing TSX dashboards ...")
+  console.log("Loading TSX dashboards ...")
   const imports = collect_imports(code);
   // Carica ricorsivamente gli altri moduli
   for (const m of imports) {

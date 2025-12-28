@@ -184,9 +184,12 @@ class FavaDashboards(FavaExtensionBase):
         base = self.read_ext_config().dashboards_path.parent
         name = request.args.get("name")
         print(base, name)
+        logger.debug(f'base:{base},  name:"{name}"')
         path = (base / name).resolve()
         uri = path.as_posix()
-        print(path, uri)
+
+        logger.debug(f'loading esmodule {name} at "{uri}"')
+
 
         try:
             with open(path, "r", encoding="utf-8") as f:
